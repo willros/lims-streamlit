@@ -1,15 +1,15 @@
 import pandas as pd
 import streamlit as st
-import time
 import numpy as np
+import datetime
 
-st.set_page_config(page_title="Plotting Demo", page_icon="🧬")
+st.set_page_config(page_title="New Experiment", page_icon="🧬")
 
-st.markdown("# Add New Experiment")
 st.sidebar.header("Add New Experiment")
-st.write(
-    """Add a new experiment to the database"""
-)
+st.markdown("""
+    # Add New Experiment 🧬
+    - Add a new experiments to the database
+""")
 
 
 # Buttons
@@ -29,6 +29,7 @@ adaptive_sampling = st.radio(
     'Adaptive sampling',
     ("Yes", "No"))
 
+reference_genome = st.text_input('Reference Genome', 'Human hg38')
 
 comment = st.text_input('Comment', 'Comment about the run')
 
@@ -39,10 +40,13 @@ df = pd.DataFrame({"name": [name],
                    "kit": [kit],
                     "barcodes": [barcodes],
                     "adaptive_sampling": [adaptive_sampling],
+                    "reference_genome": [reference_genome],
                     "comment": [comment],
+                    "date": [str(datetime.datetime.now())]
                   })
+st.dataframe(df)  
 
-st.dataframe(df)  # Same as st.write(df)
+# submit
 submit = st.button("Submit")
 
 if submit:

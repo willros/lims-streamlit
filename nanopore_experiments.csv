@@ -1,3 +1,2 @@
-name,sample_type,kit,barcodes,adaptive_sampling,comment
-Lambda Control,Plasma from human,Kit2,SQL100,Yes,Comment about the run
-Lambda Control,Plasma from human,Kit2,SQL100,Yes,Det gick åt helvete
+name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date
+Hejsan,Plasma from HÄST,Kit2,SQL200,No,HÄST,Gick åt helvete ,2022-11-21 20:03:44.536887

@@ -13,9 +13,9 @@ st.markdown("""
 
 
 # Buttons
-name = st.text_input('Name', 'Lambda Control')
+name = st.text_input('Name', '')
 
-sample_type = st.text_input('Sample Type', 'Plasma from human')
+sample_type = st.text_input('Sample Type', '')
 
 kit = st.selectbox(
     'Kit', 
@@ -29,9 +29,10 @@ adaptive_sampling = st.radio(
     'Adaptive sampling',
     ("Yes", "No"))
 
-reference_genome = st.text_input('Reference Genome', 'Human hg38')
+reference_genome = st.text_input('Reference Genome', '')
 
-comment = st.text_input('Comment', 'Comment about the run')
+comment = st.text_input('Comment', '')
+url = st.text_input('url', '')
 
 
 # Create the new input
@@ -42,7 +43,8 @@ df = pd.DataFrame({"name": [name],
                     "adaptive_sampling": [adaptive_sampling],
                     "reference_genome": [reference_genome],
                     "comment": [comment],
-                    "date": [str(datetime.datetime.now())]
+                    "date": [str(datetime.datetime.now())],
+                    "url": [url],
                   })
 st.dataframe(df)  
 

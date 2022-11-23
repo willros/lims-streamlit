@@ -12,4 +12,6 @@ st.markdown("""
 """)
 
 df = pd.read_csv("nanopore_experiments.csv")
-st.dataframe(df)
+# st.dataframe(df)
+st.markdown(df.to_html(render_links=True), unsafe_allow_html=True)
+

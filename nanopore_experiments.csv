@@ -1,2 +1,1 @@
-name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date
-Hejsan,Plasma from HÄST,Kit2,SQL200,No,HÄST,Gick åt helvete ,2022-11-21 20:03:44.536887
+name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date,url

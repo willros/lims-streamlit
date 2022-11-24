@@ -7,7 +7,8 @@ st.set_page_config(
 
 st.sidebar.success("Select what you want to do above.")
 
-st.markdown( """
+st.markdown(
+    """
     # Nanopore Sequencing 🧪
     
     ### Click on the "Add New Experiment tab above" 🧬

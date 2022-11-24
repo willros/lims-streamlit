@@ -58,6 +58,7 @@ NANOPLOT_REPORTS = reports(SAMPLE_FOLDERS, "*NanoPlot*.html")
 WF_ALIGNMENT_REPORTS = reports(SAMPLE_FOLDERS, "wf-alignment*.html")
 SEQUENCE_REPORTS = reports(SAMPLE_FOLDERS, "*FAV*.html")
 
+# Other stuff
 DATES = [return_date(x) for x in reports(SAMPLE_FOLDERS, "*FAV*.html", as_path=True)]
 
 # Dataframe
@@ -69,6 +70,7 @@ df = pd.DataFrame(
         "sequencing": SEQUENCE_REPORTS,
         "date": DATES,
     }
-)
+).sort_values("date", ascending=False)
+
 
 st.markdown(df.to_html(render_links=True), unsafe_allow_html=True)

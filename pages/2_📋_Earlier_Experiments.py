@@ -9,7 +9,6 @@ st.sidebar.header("Earlier Experiments")
 st.markdown(
     """
     # Earlier experiments 📋
-    - Sort the table by clicking on the columns
 """
 )
 

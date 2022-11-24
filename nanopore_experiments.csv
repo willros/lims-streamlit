@@ -1,2 +1,2 @@
-name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date,url,sample_concentration,volume
-,,Kit2,SQL100,Yes,,,2022-11-24 08:49:06.120268,,,900 
+name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date,sample_concentration,volume
+,,Kit2,SQL100,Yes,,,2022-11-24 12:42:23.487345,0.0,0.0

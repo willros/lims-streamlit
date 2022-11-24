@@ -29,8 +29,6 @@ reference_genome = st.text_input("Reference Genome", "")
 
 comment = st.text_input("Comment", "")
 
-url = st.text_input("url", "")
-
 sample_concentration = st.number_input("sample concentration")
 
 volume = st.number_input("volume loaded")
@@ -46,7 +44,6 @@ df = pd.DataFrame(
         "reference_genome": [reference_genome],
         "comment": [comment],
         "date": [str(datetime.datetime.now())],
-        "url": [url],
         "sample_concentration": [sample_concentration],
         "volume": [volume],
     }

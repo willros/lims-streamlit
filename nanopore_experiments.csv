@@ -1,3 +1,4 @@
 name,sample_type,kit,barcodes,adaptive_sampling,reference_genome,comment,date,sample_concentration,volume
 ,,Kit2,SQL100,Yes,,,2022-11-24 12:42:23.487345,0.0,0.0
 Heksan ,häst,Kit2,SQL100,Yes,,,2022-11-24 18:15:25.202561,0.0,0.0
+HEJSAN,elefant,Kit2,SQL100,Yes,elefant,det här gick inte så bra,2022-12-07 14:04:04.873765,0.0,0.0

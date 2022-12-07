@@ -9,9 +9,7 @@ import re
 
 st.set_page_config(page_title="List Folders", page_icon="🥽")
 
-config_path = "/Users/wiro0005/clinical_genomics/lims-streamlit/config.yaml"
-with open(config_path, "r") as f:
-    config = yaml.full_load(f)
+
 
 
 def reports(folder: list[Path], pattern: str, as_path: bool = False) -> list[Path]:

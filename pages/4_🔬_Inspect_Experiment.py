@@ -33,11 +33,11 @@ def find_files(sample: str) -> Files:
     Finds all relevant files for the sample in question
     """
     whole_path = Path(config["SAMPLES"]) / sample
-    
+
     # alignment report
     alignment_report = str(list(whole_path.rglob("raw_report/*raw*.html"))[0])
     alignment_report = f"file:///{alignment_report}"
-    
+
     # pdfs
     polyA_plot = list(whole_path.rglob("*polyA-plot.pdf"))[0]
     polyT_plot = list(whole_path.rglob("*polyT-plot.pdf"))[0]
@@ -47,21 +47,38 @@ def find_files(sample: str) -> Files:
         list(whole_path.rglob("read_statistics/*raw.tsv"))[0], sep="\t"
     )
     num_raw_reads = raw_read_info.num_seqs.squeeze()
-    
-    # telotag 
+
+    # telotag
     telo_tag = pd.read_csv(
         list(whole_path.rglob("read_statistics/*telotag.tsv"))[0], sep="\t"
     )
     num_telo_tag = telo_tag.num_seqs.squeeze()
+
     
     # telomere df
-    telomere_df = pd.read_csv(
-        list(whole_path.rglob("results/*results.csv"))[0],
+    chr_lengths = pd.read_csv("chm13v2_chr_lengths.csv")
+    telomere_df = (
+        pd.read_csv(
+            list(whole_path.rglob("results/*results.csv"))[0],
+        )
+        .assign(read_length=lambda x: x.align_end - x.align_start)
+        .rename(columns={"region_length": "telomere_length"})
+        .assign(
+            arm=lambda x: np.select(
+                [x.align_start < 50_000, x.align_start > 100_000],
+                ["left", "right"],
+                default=pd.NA,
+            )
+        )
+        .merge(chr_lengths, on="chr")
+        .rename(columns={"total_length": "chr_length"})
+        .dropna()
+        .reset_index()
     )
-    
-    #tail_info = pd.read_csv(
-    #    list(whole_path.rglob("read_statistics/*tails.csv"))[0], 
-    #)
+
+    # tail_info = pd.read_csv(
+    #    list(whole_path.rglob("read_statistics/*tails.csv"))[0],
+    # )
 
     files = Files(
         polyA=polyA_plot,
@@ -93,25 +110,27 @@ st.markdown(
 """
 )
 
+
 def plot_telomeres(telomere_df: pd.DataFrame) -> None:
     """
     Plots information about found telomeres
     """
-    
     plot = (
-    alt.Chart(telomere_df)
-    .mark_boxplot()
-    .encode(
-     alt.X("chr:N", title="Chromosome"),
-     alt.Color("telomere_type:N"),
-     alt.Y("region_length", title="Length of Telomere"),
-    )
-    .properties(title=f"Number of telomeric reads {telomere_df.shape[0]}",
-                height=700,
-    )
-    .facet(column="telomere_type")
+        alt.Chart(telomere_df)
+        .mark_boxplot()
+        .encode(
+            alt.X("chr:N", title="Chromosome"),
+            alt.Color("arm:N"),
+            alt.Y("telomere_length", title="Length of Telomere"),
+        )
+        .properties(
+            title=f"Number of telomeric reads: {telomere_df.shape[0]}",
+            height=700,
+        )
+        .facet(column="arm")
     )
     return plot
+
 
 # choose samples
 SAMPLES = [
@@ -139,7 +158,7 @@ st.markdown(
 # read statistics
 st.markdown(
     f"""
-    # 🌟🌟🌟
+    ----
     # Read statistics:
     ### Number of raw reads:
     #### {sample_files.num_raw_reads:,}
@@ -152,7 +171,7 @@ st.markdown(
 # polyA and polyT
 st.markdown(
     """
-    # 🌟🌟🌟
+    ----
     # PolyA and PolyT plots
     """
 )
@@ -164,7 +183,7 @@ display_pdf(sample_files.polyA)
 # telomere information
 st.markdown(
     f"""
-    # 🌟🌟🌟
+    ----
     # Information about Telomeres
     """
 )
@@ -176,6 +195,4 @@ st.markdown(
     ### Table with telomere information
     """
 )
-st.dataframe(sample_files.telomere_df)
-
-
+st.dataframe(sample_files.telomere_df.style.format(thousands=","))

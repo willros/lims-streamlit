@@ -10,8 +10,6 @@ import re
 st.set_page_config(page_title="List Folders", page_icon="🥽")
 
 
-
-
 def reports(folder: list[Path], pattern: str, as_path: bool = False) -> list[Path]:
     """
     :param folder list[Path]: List of sample directiories

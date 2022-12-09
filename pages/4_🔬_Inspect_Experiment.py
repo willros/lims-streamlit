@@ -63,15 +63,15 @@ def find_files(sample: str) -> Files:
         )
         .assign(read_length=lambda x: x.align_end - x.align_start)
         .rename(columns={"region_length": "telomere_length"})
+        .merge(chr_lengths, on="chr")
+        .rename(columns={"total_length": "chr_length"})
         .assign(
             arm=lambda x: np.select(
-                [x.align_start < 50_000, x.align_start > 100_000],
+                [x.align_start < 100_000, x.align_start > x.chr_length - 100_000],
                 ["left", "right"],
                 default=pd.NA,
             )
         )
-        .merge(chr_lengths, on="chr")
-        .rename(columns={"total_length": "chr_length"})
         .dropna()
         .reset_index()
     )
@@ -185,6 +185,10 @@ st.markdown(
     f"""
     ----
     # Information about Telomeres
+    #### Left reads:
+    Reads that are aligned between 0 and 100,000 of the chromosome
+    #### Right reads: 
+    Reads that are aligned between chromosome end - 100,000 and end of the chromosome
     """
 )
 telomere_plot = plot_telomeres(sample_files.telomere_df)

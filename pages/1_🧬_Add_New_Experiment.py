@@ -33,6 +33,8 @@ sample_concentration = st.number_input("sample concentration")
 
 volume = st.number_input("volume loaded")
 
+oligos_and_adapters = st.text_input("Oligos and Adapters used. Example: AAATTTGGCCC")
+
 # Create the new input
 df = pd.DataFrame(
     {
@@ -46,8 +48,15 @@ df = pd.DataFrame(
         "date": [str(datetime.datetime.now())],
         "sample_concentration": [sample_concentration],
         "volume": [volume],
+        "oligos_and_adapters": [oligos_and_adapters],
     }
 )
+st.markdown(
+    """
+    ### Make sure that everthing is correct before submitting! 🧐
+    """
+)
+
 st.dataframe(df)
 
 # submit

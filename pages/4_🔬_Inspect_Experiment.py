@@ -5,7 +5,7 @@ import numpy as np
 import yaml
 import altair as alt
 import base64
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # configs
 st.set_page_config(page_title="Inspect Experiments", page_icon="🔬")
@@ -39,8 +39,12 @@ def find_files(sample: str) -> Files:
     alignment_report = f"file:///{alignment_report}"
 
     # pdfs
-    polyA_plot = list(whole_path.rglob("*polyA-plot.pdf"))[0]
-    polyT_plot = list(whole_path.rglob("*polyT-plot.pdf"))[0]
+    try:
+        polyA_plot = list(whole_path.rglob("*polyA-plot.pdf"))[0]
+        polyT_plot = list(whole_path.rglob("*polyT-plot.pdf"))[0]
+    except:
+        polyA_plot = ""
+        polyT_plot = ""
 
     # read info
     raw_read_info = pd.read_csv(
@@ -169,16 +173,17 @@ st.markdown(
 )
 
 # polyA and polyT
-st.markdown(
-    """
-    ----
-    # PolyA and PolyT plots
-    """
-)
+if sample_files.polyT:
+    st.markdown(
+        """
+        ----
+        # PolyA and PolyT plots
+        """
+    )
 
-# polyT and polyA plots
-display_pdf(sample_files.polyT)
-display_pdf(sample_files.polyA)
+    # polyT and polyA plots
+    display_pdf(sample_files.polyT)
+    display_pdf(sample_files.polyA)
 
 # telomere information
 st.markdown(

@@ -6,6 +6,7 @@ import yaml
 import altair as alt
 import base64
 from dataclasses import dataclass, field
+from PIL import Image
 
 # configs
 st.set_page_config(page_title="Inspect Experiments", page_icon="🔬")
@@ -121,11 +122,14 @@ def plot_telomeres(telomere_df: pd.DataFrame) -> None:
     """
     plot = (
         alt.Chart(telomere_df)
-        .mark_boxplot()
+        .mark_circle(size=100)
         .encode(
             alt.X("chr:N", title="Chromosome"),
             alt.Color("arm:N"),
             alt.Y("telomere_length", title="Length of Telomere"),
+            tooltip=[alt.Tooltip("telomere_length:Q", title="Telomere length"),
+                     alt.Tooltip("telomere_type:N", title="Telomere type")
+                    ]
         )
         .properties(
             title=f"Number of telomeric reads: {telomere_df.shape[0]}",
@@ -196,6 +200,9 @@ st.markdown(
     Reads that are aligned between chromosome end - 100,000 and end of the chromosome
     """
 )
+telomere_image = Image.open('telomere.png')
+st.image(telomere_image, caption='Schematic of chromosome')
+
 telomere_plot = plot_telomeres(sample_files.telomere_df)
 st.altair_chart(telomere_plot)
 
